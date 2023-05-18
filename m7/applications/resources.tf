@@ -7,11 +7,11 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~>3.0"
     }
     consul = {
-      source = "hashicorp/consul"
+      source  = "hashicorp/consul"
       version = "~>2.0"
     }
   }
@@ -37,14 +37,14 @@ provider "consul" {
 
 locals {
   asg_instance_size = jsondecode(data.consul_keys.applications.var.applications)["asg_instance_size"]
-  asg_max_size = jsondecode(data.consul_keys.applications.var.applications)["asg_max_size"]
-  asg_min_size = jsondecode(data.consul_keys.applications.var.applications)["asg_min_size"]
-  rds_storage_size = jsondecode(data.consul_keys.applications.var.applications)["rds_storage_size"]
-  rds_engine = jsondecode(data.consul_keys.applications.var.applications)["rds_engine"]
-  rds_version = jsondecode(data.consul_keys.applications.var.applications)["rds_version"]
+  asg_max_size      = jsondecode(data.consul_keys.applications.var.applications)["asg_max_size"]
+  asg_min_size      = jsondecode(data.consul_keys.applications.var.applications)["asg_min_size"]
+  rds_storage_size  = jsondecode(data.consul_keys.applications.var.applications)["rds_storage_size"]
+  rds_engine        = jsondecode(data.consul_keys.applications.var.applications)["rds_engine"]
+  rds_version       = jsondecode(data.consul_keys.applications.var.applications)["rds_version"]
   rds_instance_size = jsondecode(data.consul_keys.applications.var.applications)["rds_instance_size"]
-  rds_multi_az = jsondecode(data.consul_keys.applications.var.applications)["rds_multi_az"]
-  rds_db_name = jsondecode(data.consul_keys.applications.var.applications)["rds_db_name"]
+  rds_multi_az      = jsondecode(data.consul_keys.applications.var.applications)["rds_multi_az"]
+  rds_db_name       = jsondecode(data.consul_keys.applications.var.applications)["rds_db_name"]
 
   common_tags = merge(jsondecode(data.consul_keys.applications.var.common_tags),
     {
@@ -74,7 +74,7 @@ resource "aws_launch_configuration" "webapp_lc" {
 
   user_data                   = file("./templates/userdata.sh")
   associate_public_ip_address = true
-  iam_instance_profile = aws_iam_instance_profile.asg.name
+  iam_instance_profile        = aws_iam_instance_profile.asg.name
 }
 
 resource "aws_elb" "webapp_elb" {
@@ -103,8 +103,8 @@ resource "aws_elb" "webapp_elb" {
 
 resource "aws_autoscaling_group" "webapp_asg" {
   lifecycle {
-    create_before_destroy = true
-    #create_before_destroy = false
+#    create_before_destroy = true
+    create_before_destroy = false
   }
 
   vpc_zone_identifier   = data.terraform_remote_state.networking.outputs.public_subnets
@@ -119,8 +119,8 @@ resource "aws_autoscaling_group" "webapp_asg" {
   dynamic "tag" {
     for_each = local.common_tags
     content {
-      key = tag.key
-      value = tag.value
+      key                 = tag.key
+      value               = tag.value
       propagate_at_launch = true
     }
   }

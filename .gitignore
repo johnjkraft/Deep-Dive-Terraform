@@ -1,3 +1,9 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
 #  Local .terraform directories
 **/.terraform/*
 
@@ -19,3 +25,6 @@
 
 # .hcl files
 *.hcl
+
+# environment & credentials
+!/env-creds.sh

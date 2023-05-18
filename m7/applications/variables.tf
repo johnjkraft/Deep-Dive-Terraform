@@ -1,26 +1,26 @@
 
 variable "region" {
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 # Consul variables
 
 variable "consul_address" {
-  type = string
+  type        = string
   description = "Address of Consul server"
-  default = "127.0.0.1"
+  default     = "127.0.0.1"
 }
 
 variable "consul_port" {
-  type = number
+  type        = number
   description = "Port Consul server is listening on"
-  default = "8500"
+  default     = "8500"
 }
 
 variable "consul_datacenter" {
-  type = string
+  type        = string
   description = "Name of the Consul datacenter"
-  default = "dc1"
+  default     = "dc1"
 }
 
 
